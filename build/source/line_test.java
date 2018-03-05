@@ -88,7 +88,7 @@ public void draw() {
   // so that we can see the lines better
   for(int i = 0; i < 10; i++)
   {
-    float amplitude = fft.getAvg(i);
+    float amplitude = map(fft.getAvg(i), 0, 50, 0, 10);
     if (amplitude<audioThresh) {
       circles[i] = min(height/2,amplitude*(height/2));
     } else {
@@ -108,20 +108,24 @@ public void draw() {
     pushStyle();
 
     // ELLIPSES
+    scale(1, 1);
     stroke(255,amplitude*255,255,amplitude*255);
     strokeWeight(map(amplitude, 0, 1, STROKE_MIN, STROKE_MAX));
     ellipse(0, 0, circles[i], circles[i]);
 
     // RECTANGLES
-    stroke(255-amplitude*40, 255,255-amplitude*10,255-amplitude*255);
-    strokeWeight(map(amplitude, 0, 1, 0, 3));
-    if (i%2 == 0) {
+    stroke(255-amplitude*40, 255,255-amplitude*10,255-amplitude*200);
+    strokeWeight(map(amplitude, 0, 1, 0, 4));
+    scale(1, min(1, amplitude/3));
+    if (i%3 == 0) {
       rect(0, 0, circles[i], circles[i]);
     } else {
       rect(0, 0, -circles[i], -circles[i]);
     }
 
     // LINES
+    scale(1, 1);
+    stroke(255-amplitude*40, 255,255-amplitude*10,amplitude*10);
     if (i%4 == 0) {
       strokeWeight(map(amplitude, 0, 10, 0, .5f));
       rotate(radians(0-frameCount/4));
